@@ -34,7 +34,7 @@ public class DashboardService {
     }
 
     public DashboardDto addDashboard(DashboardDto dashboardDto) {
-       Persona user=personaService.findPersonaId(dashboardDto.getIdUser());
+       Persona user=personaService.findPersonaId(/*dashboardDto.getIdUser()*/1);
         Dashboard dashboard=new Dashboard();
         //dashboard.setIdDashboar(dashboardDto.getIdDashboard());
         dashboard.setName(dashboardDto.getName());
