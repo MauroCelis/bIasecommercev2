@@ -74,6 +74,23 @@ public class ProductService {
         return productoDto;
     }
 
+    public ProductoDto invetarioroducto( int id ,int cant){
+
+        Product product=productoRepository.findprodutbyidProduct(id);
+        //product.setIdProduct(productoDto.getIdProduct());
+        //product.setName(productoDto.getName());
+        //product.setDescription(productoDto.getDescription());
+        //product.setCost(productoDto.getCost());
+       // product.setType(productoDto.getType());
+        product.setQuantity(product.getQuantity()+cant);
+       // product.setCode(productoDto.getCode());
+        productoRepository.save(product);
+        ProductoDto productoDto = new ProductoDto(product);
+        return productoDto;
+    }
+
+
+
     public List<ProductoDto> getlistproduct(){
         List<Product> productList = productoRepository.findproduclist();
         List<ProductoDto> productoDtos=new ArrayList<>();

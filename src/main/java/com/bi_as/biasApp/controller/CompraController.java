@@ -22,10 +22,10 @@ public class CompraController {
         this.compraService = compraService;
     }
 
-    @PostMapping("/addcompra/{tipocompra}")
-    public List<ProductoDto> addCompra(@PathVariable("tipocompra")int tipocompra, @RequestBody List<ProductoDto> productoDto){
+    @PostMapping("/addcompra/{tipocompra}/{iduser}")
+    public List<ProductoDto> addCompra(@PathVariable("tipocompra")int tipocompra,@PathVariable("iduser")int iduser, @RequestBody List<ProductoDto> productoDto){
         // LOGGER.info(productService.nuevoproducto(productoDto,idtienda).toString());
-        return compraService.addCompra(productoDto,tipocompra);
+        return compraService.addCompra(productoDto,tipocompra,iduser);
     }
 
 

@@ -2,7 +2,6 @@ package com.bi_as.biasApp.dao;
 
 import com.bi_as.biasApp.domain.UserAdmin;
 import com.bi_as.biasApp.domain.UserSeller;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

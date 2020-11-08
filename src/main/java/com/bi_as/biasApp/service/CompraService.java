@@ -33,7 +33,7 @@ public class CompraService {
         this.userClientRepository=userClientRepository;
     }
 
-    public List<ProductoDto> addCompra(List<ProductoDto> productoDtoList,int tipocompra){
+    public List<ProductoDto> addCompra(List<ProductoDto> productoDtoList,int tipocompra,int idcliente){
         Compra compra=new Compra();
         compra.setDate(new Date().toString());
         DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
@@ -43,12 +43,17 @@ public class CompraService {
         compra.setActive(1);
         compra.setEstado(tipocompra);
         compra.setTxSeller(1);
-        UserClient userClient=userClientRepository.finduserbyidclient(1);
+        UserClient userClient=userClientRepository.finduserbyidclient(idcliente);
         compra.setUserClientIdUserclient(userClient);
         compraRepository.save(compra);
         for(ProductoDto productoDto:productoDtoList){
             ProductCompra productCompra=new ProductCompra();
+
             Product product=productoRepository.findprodutbyidProduct(productoDto.getIdProduct());
+
+            product.setQuantity(product.getQuantity()-productoDto.getQuantity());
+            productoRepository.save(product);
+
             productCompra.setActive(1);
             productCompra.setCompraIdCompra(compra);
             productCompra.setProductIdProduct(product);

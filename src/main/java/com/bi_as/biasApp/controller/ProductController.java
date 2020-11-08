@@ -61,7 +61,15 @@ public class ProductController {
         return productService.ediproducto(productoDto);
 
     }
-//
+
+
+    @PutMapping("/editproducto/{id}/{inv}")
+    public ProductoDto invetarioroducto(@PathVariable("id") int idproducto,@PathVariable("inv") int inve){
+        //LOGGER.info("Realizando modificacion de editar user  esss "+productoDto.getIdProduct());
+        return productService.invetarioroducto(idproducto,inve);
+
+    }
+//invetarioroducto
     @PutMapping("/deleteproducto")
     public String delitPublication(@RequestBody ProductoDto productoDto){
         LOGGER.info("Realizando modificacion de editar user  esss "+productoDto.getIdProduct());

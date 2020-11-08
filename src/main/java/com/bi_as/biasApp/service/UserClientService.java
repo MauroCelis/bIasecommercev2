@@ -6,7 +6,6 @@ import com.bi_as.biasApp.dao.StroreRepository;
 import com.bi_as.biasApp.dao.UserClientRepository;
 import com.bi_as.biasApp.domain.*;
 import com.bi_as.biasApp.dto.PersonaDto;
-import org.omg.PortableInterceptor.USER_EXCEPTION;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
