@@ -1,12 +1,21 @@
 package com.bi_as.biasApp.controller;
 
+import com.bi_as.biasApp.FBInitialize;
 import com.bi_as.biasApp.domain.User;
 import com.bi_as.biasApp.dto.PersonaDto;
 import com.bi_as.biasApp.service.PersonaService;
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.CollectionReference;
+import com.google.cloud.firestore.DocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 //@CrossOrigin(origins = "http://localhost:4200",maxAge = 3600)
 @RestController
@@ -15,12 +24,18 @@ import org.springframework.web.bind.annotation.*;
 public class PersonaController {
 
     private PersonaService personaService;
+
+    private FBInitialize fbInitialize;
     private static final Logger LOGGER = LoggerFactory.getLogger(PersonaController.class);
 
     @Autowired
-    public PersonaController(PersonaService personaService) {
+    public PersonaController(PersonaService personaService, FBInitialize fbInitialize) {
         this.personaService = personaService;
+        this.fbInitialize = fbInitialize;
     }
+
+
+
 
 
     @RequestMapping("/idUser/{id}")
@@ -62,11 +77,23 @@ public class PersonaController {
         return personaService.editUserSeller(personaDto);
 
     }
-
-
-
-
-
+    @PostMapping("/adduser")
+    public int addUserCloud(@RequestBody PersonaDto personaDto){
+        CollectionReference userCR=fbInitialize.getFirebase().collection("Users");
+        userCR.document(String.valueOf(personaDto.getIdUser())).set(personaDto);
+        return personaDto.getIdUser();
+    }
+    @RequestMapping("/userlist")
+    public List<PersonaDto> getUserCloud()throws InterruptedException, ExecutionException {
+       List<PersonaDto> personaDtoList=new ArrayList<>();
+       CollectionReference user=fbInitialize.getFirebase().collection("Users");
+        ApiFuture<QuerySnapshot> querySnapshot=user.get();
+        for(DocumentSnapshot doc:querySnapshot.get().getDocuments()){
+            PersonaDto personaDto=doc.toObject(PersonaDto.class);
+            personaDtoList.add(personaDto);
+        }
+        return personaDtoList;
+    }
 
 
 }
