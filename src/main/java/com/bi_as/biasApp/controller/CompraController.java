@@ -39,7 +39,8 @@ public class CompraController {
     @PostMapping("/addCompraCloud")
     public int addCompraInCloud(@RequestBody CompraDto compraDto){
         CollectionReference compraCR=fbInitialize.getFirebase().collection("Compra");
-        compraCR.document(String.valueOf(compraDto.getIdCompra())).set(compraDto);
+        String cad="compra"+compraDto.getIdCompra();
+        compraCR.document(cad).set(compraDto);
         // LOGGER.info(productService.nuevoproducto(productoDto,idtienda).toString());
         return compraDto.getIdCompra();
 //        return productService.nuevoproducto(productoDto,idtienda);
@@ -68,7 +69,8 @@ public class CompraController {
     @PostMapping("/addPedidoCloud")
     public int addPedidoInCloud(@RequestBody CompraDto compraDto){
         CollectionReference compraCR=fbInitialize.getFirebase().collection("Pedidos");
-        compraCR.document(String.valueOf(compraDto.getIdCompra())).set(compraDto);
+        String cad="pedido"+compraDto.getIdCompra();
+        compraCR.document(cad).set(compraDto);
         // LOGGER.info(productService.nuevoproducto(productoDto,idtienda).toString());
         return compraDto.getIdCompra();
 //        return productService.nuevoproducto(productoDto,idtienda);

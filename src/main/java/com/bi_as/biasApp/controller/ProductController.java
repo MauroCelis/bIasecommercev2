@@ -62,8 +62,10 @@ public class ProductController {
     @PostMapping("/addproduct")
     public int addproductInCloud(@RequestBody ProductoDto productoDto){
         LOGGER.info("llego aqui xd");
+        String cad=String.valueOf(productoDto.getName());
+        cad=cad.replace(" ","");
         CollectionReference productCR=fbInitialize.getFirebase().collection("Product");
-        productCR.document(String.valueOf(productoDto.getIdProduct())).set(productoDto);
+        productCR.document(cad).set(productoDto);
         // LOGGER.info(productService.nuevoproducto(productoDto,idtienda).toString());
         return productoDto.getIdProduct();
 //        return productService.nuevoproducto(productoDto,idtienda);
