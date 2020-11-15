@@ -1,9 +1,11 @@
 package com.bi_as.biasApp.controller;
 
 
+import com.bi_as.biasApp.FBInitialize;
 import com.bi_as.biasApp.Persona;
 import com.bi_as.biasApp.dto.PersonaDto;
 import com.bi_as.biasApp.service.UserClientService;
+import com.google.cloud.firestore.CollectionReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +19,16 @@ import java.util.List;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class userClientControler {
 
-    UserClientService userClientService;
+    private FBInitialize fbInitialize;
+
+    private UserClientService userClientService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(userClientControler.class);
 
     @Autowired
-    public userClientControler(UserClientService userClientService) {
+    public userClientControler(UserClientService userClientService,FBInitialize fbInitialize) {
         this.userClientService = userClientService;
+        this.fbInitialize=fbInitialize;
     }
 
     @RequestMapping("/userclientlist")
@@ -36,6 +41,12 @@ public class userClientControler {
     public PersonaDto addUserSeller(@RequestBody PersonaDto personaDto){
 //        UserDto userDto=new UserDto(userService.verifyUser(user));
 //        LOGGER.info("Obteniendo id "+personaDto.getNicknameUser()+"    "+ personaDto.getPassword());
+
+
+        CollectionReference userCR=fbInitialize.getFirebase().collection("UsersClient");
+        userCR.document(String.valueOf(personaDto.getNicknameUser())).set(personaDto);
+
+
         return userClientService.addUserClient(personaDto);
 
     }

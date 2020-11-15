@@ -49,7 +49,7 @@ public class StoreController {
     public int addproductInCloud(@RequestBody StoreDto storeDto){
         LOGGER.info("llego aqui xd");
         CollectionReference productCR=fbInitialize.getFirebase().collection("Stores");
-        productCR.document(String.valueOf(storeDto.getIdStore())).set(storeDto);
+        productCR.document(String.valueOf(storeDto.getNameStore())).set(storeDto);
         return storeDto.getIdStore();
     }
     @RequestMapping("/storelistcloud")
