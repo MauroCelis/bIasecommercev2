@@ -29,18 +29,19 @@ public class CompraController {
         this.compraService = compraService;
         this.fbInitialize=fbInitialize;
     }
-
+/*
     @PostMapping("/addcompra/{tipocompra}/{iduser}")
-    public List<ProductoDto> addCompra(@PathVariable("tipocompra")int tipocompra,@PathVariable("iduser")int iduser, @RequestBody List<ProductoDto> productoDto){
+    public int addCompra(@PathVariable("tipocompra")int tipocompra,@PathVariable("iduser")int iduser, @RequestBody List<ProductoDto> productoDto){
         // LOGGER.info(productService.nuevoproducto(productoDto,idtienda).toString());
         return compraService.addCompra(productoDto,tipocompra,iduser);
-    }
+    }*/
 
-    @PostMapping("/addCompraCloud")
-    public int addCompraInCloud(@RequestBody CompraDto compraDto){
+    @PostMapping("/addCompraCloud/{tipocompra}/{iduser}")
+    public int addCompraInCloud(@PathVariable("tipocompra")int tipocompra,@PathVariable("iduser")int iduser,@RequestBody CompraDto compraDto){
         CollectionReference compraCR=fbInitialize.getFirebase().collection("Compra");
         String cad="compra"+compraDto.getIdCompra();
         compraCR.document(cad).set(compraDto);
+        int i=compraService.addCompra(compraDto,tipocompra,iduser);
         // LOGGER.info(productService.nuevoproducto(productoDto,idtienda).toString());
         return compraDto.getIdCompra();
 //        return productService.nuevoproducto(productoDto,idtienda);
@@ -67,10 +68,11 @@ public class CompraController {
     }
 
     @PostMapping("/addPedidoCloud")
-    public int addPedidoInCloud(@RequestBody CompraDto compraDto){
+    public int addPedidoInCloud(@PathVariable("tipocompra")int tipocompra,@PathVariable("iduser")int iduser,@RequestBody CompraDto compraDto){
         CollectionReference compraCR=fbInitialize.getFirebase().collection("Pedidos");
         String cad="pedido"+compraDto.getIdCompra();
         compraCR.document(cad).set(compraDto);
+        int i=compraService.addCompra(compraDto,tipocompra,iduser);
         // LOGGER.info(productService.nuevoproducto(productoDto,idtienda).toString());
         return compraDto.getIdCompra();
 //        return productService.nuevoproducto(productoDto,idtienda);

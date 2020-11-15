@@ -50,22 +50,24 @@ public class ProductController {
         return  productoDto;
     }
 
-
+/*
     @PostMapping("/idtienda/{id}")
-    public ProductoDto addproduct(@PathVariable("id")String id,@RequestBody ProductoDto productoDto){
+    public int addproduct(@PathVariable("id")String id,@RequestBody ProductoDto productoDto){
         LOGGER.info("llego aqui xd");
         int idtienda =Integer.parseInt(id);
        // LOGGER.info(productService.nuevoproducto(productoDto,idtienda).toString());
         return productService.nuevoproducto(productoDto,idtienda);
     }
-
-    @PostMapping("/addproduct")
-    public int addproductInCloud(@RequestBody ProductoDto productoDto){
+*/
+    @PostMapping("/addproduct/{id}")
+    public int addproductInCloud(@PathVariable("id")String id,@RequestBody ProductoDto productoDto){
         LOGGER.info("llego aqui xd");
         String cad=String.valueOf(productoDto.getName());
         cad=cad.replace(" ","");
         CollectionReference productCR=fbInitialize.getFirebase().collection("Product");
         productCR.document(cad).set(productoDto);
+        int idtienda =Integer.parseInt(id);
+        int i=productService.nuevoproducto(productoDto,idtienda);
         // LOGGER.info(productService.nuevoproducto(productoDto,idtienda).toString());
         return productoDto.getIdProduct();
 //        return productService.nuevoproducto(productoDto,idtienda);
@@ -73,7 +75,7 @@ public class ProductController {
 
 
     @PutMapping("/editproducto")
-    public ProductoDto editPublication(@RequestBody ProductoDto productoDto){
+    public int editPublication(@RequestBody ProductoDto productoDto){
         LOGGER.info("Realizando modificacion de editar user  esss "+productoDto.getIdProduct());
 
 
@@ -87,6 +89,7 @@ public class ProductController {
         Firestore dbFirestore=fbInitialize.getFirebase();
         ApiFuture<WriteResult> collectionApiFuture= dbFirestore.collection("Product").document("1").set(productoDto);
         LOGGER.info("Realizando modificacion de editar user  esss "+productoDto.getIdProduct());
+        int i=productService.ediproducto(productoDto);
         return collectionApiFuture.get().getUpdateTime().toString();
 //        return productService.ediproducto(productoDto);
 

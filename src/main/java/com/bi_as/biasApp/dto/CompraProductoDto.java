@@ -5,17 +5,34 @@ public class CompraProductoDto {
     private int idCompra;
     private int id_producto;
     private int estado;
+    private int quantity;
     private int precio;
 
     public CompraProductoDto(){
 
     }
 
-    public CompraProductoDto(int idCompra, int id_producto, int estado, int precio) {
+    public CompraProductoDto(int idCompra, int id_producto, int estado, int quantity, int precio) {
+        this.idCompra = idCompra;
+        this.id_producto = id_producto;
+        this.estado = estado;
+        this.quantity = quantity;
+        this.precio = precio;
+    }
+
+/*    public CompraProductoDto(int idCompra, int id_producto, int estado, int precio) {
         this.idCompra = idCompra;
         this.id_producto = id_producto;
         this.estado = estado;
         this.precio = precio;
+    }*/
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public int getIdCompra() {

@@ -8,6 +8,8 @@ import com.bi_as.biasApp.domain.Compra;
 import com.bi_as.biasApp.domain.Product;
 import com.bi_as.biasApp.domain.ProductCompra;
 import com.bi_as.biasApp.domain.UserClient;
+import com.bi_as.biasApp.dto.CompraDto;
+import com.bi_as.biasApp.dto.CompraProductoDto;
 import com.bi_as.biasApp.dto.ProductoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +35,7 @@ public class CompraService {
         this.userClientRepository=userClientRepository;
     }
 
-    public List<ProductoDto> addCompra(List<ProductoDto> productoDtoList,int tipocompra,int idcliente){
+    public int addCompra(CompraDto compraDto, int tipocompra, int idcliente){
         Compra compra=new Compra();
         compra.setDate(new Date().toString());
         DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
@@ -46,12 +48,12 @@ public class CompraService {
         UserClient userClient=userClientRepository.finduserbyidclient(idcliente);
         compra.setUserClientIdUserclient(userClient);
         compraRepository.save(compra);
-        for(ProductoDto productoDto:productoDtoList){
+        for(CompraProductoDto compraProductoDto:compraDto.getCompraProductoDtoList()){
             ProductCompra productCompra=new ProductCompra();
 
-            Product product=productoRepository.findprodutbyidProduct(productoDto.getIdProduct());
+            Product product=productoRepository.findprodutbyidProduct(compraProductoDto.getId_producto());
 
-            product.setQuantity(product.getQuantity()-productoDto.getQuantity());
+            product.setQuantity(product.getQuantity()-compraProductoDto.getQuantity());
             productoRepository.save(product);
 
             productCompra.setActive(1);
@@ -59,7 +61,7 @@ public class CompraService {
             productCompra.setProductIdProduct(product);
             productCompraRepository.save(productCompra);
         }
-        return  productoDtoList;
+        return  compra.getActive();
     }
 
 }

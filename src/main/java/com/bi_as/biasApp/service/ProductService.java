@@ -37,7 +37,7 @@ public class ProductService {
 
     }
 
-    public ProductoDto nuevoproducto(ProductoDto productoDto,int idtienda){
+    public int nuevoproducto(ProductoDto productoDto,int idtienda){
         Store tienda = new Store();
         tienda=stroreRepository.findstoreidstore(idtienda);
 
@@ -58,9 +58,9 @@ public class ProductService {
         product.setStroreIdStore(tienda);
         productoRepository.save(product);
         ProductoDto productoDto1= new ProductoDto(product);
-        return productoDto;
+        return product.getActive();
     }
-    public ProductoDto ediproducto(ProductoDto productoDto){
+    public int ediproducto(ProductoDto productoDto){
 
         Product product=productoRepository.findprodutbyidProduct(productoDto.getIdProduct());
         //product.setIdProduct(productoDto.getIdProduct());
@@ -71,7 +71,7 @@ public class ProductService {
         product.setQuantity(productoDto.getQuantity());
         product.setCode(productoDto.getCode());
         productoRepository.save(product);
-        return productoDto;
+        return product.getActive();
     }
 
     public ProductoDto invetarioroducto( int id ,int cant){
