@@ -1,5 +1,6 @@
 package com.bi_as.biasApp.service;
 
+import com.bi_as.biasApp.FBInitialize;
 import com.bi_as.biasApp.dao.ProductoRepository;
 import com.bi_as.biasApp.dao.StroreRepository;
 import com.bi_as.biasApp.domain.Persona;
@@ -8,6 +9,10 @@ import com.bi_as.biasApp.domain.Store;
 import com.bi_as.biasApp.domain.UserSeller;
 import com.bi_as.biasApp.dto.PersonaDto;
 import com.bi_as.biasApp.dto.ProductoDto;
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.CollectionReference;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.WriteResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +25,14 @@ import java.util.List;
 public class ProductService {
     ProductoRepository productoRepository;
     StroreRepository stroreRepository;
+    FBInitialize fbInitialize;
     private static final Logger LOGGER= LoggerFactory.getLogger(ProductService.class);
 
     @Autowired
-    public ProductService(ProductoRepository productoRepository, StroreRepository stroreRepository) {
+    public ProductService(ProductoRepository productoRepository, StroreRepository stroreRepository,FBInitialize fbInitialize) {
         this.productoRepository = productoRepository;
         this.stroreRepository = stroreRepository;
+        this.fbInitialize=fbInitialize;
     }
 
     public Product findidproduct(int id ){
@@ -37,7 +44,7 @@ public class ProductService {
 
     }
 
-    public int nuevoproducto(ProductoDto productoDto,int idtienda){
+    public int addProductDB(ProductoDto productoDto,int idtienda){
         Store tienda = new Store();
         tienda=stroreRepository.findstoreidstore(idtienda);
 
@@ -60,6 +67,23 @@ public class ProductService {
         ProductoDto productoDto1= new ProductoDto(product);
         return product.getActive();
     }
+
+    public int addProductGeneral(ProductoDto productoDto,int idtienda){
+        int i=addProductDB(productoDto,idtienda);
+        Product product=productoRepository.findlastproductregistered();
+        productoDto.setIdProduct(product.getIdProduct());
+        addProductCloud(productoDto);
+        return i;
+    }
+
+
+    public void addProductCloud(ProductoDto productoDto){
+        String cad=String.valueOf(productoDto.getName());
+        cad=cad.replace(" ","");
+        CollectionReference productCR=fbInitialize.getFirebase().collection("Product");
+        productCR.document(cad).set(productoDto);
+    }
+
     public int ediproducto(ProductoDto productoDto){
 
         Product product=productoRepository.findprodutbyidProduct(productoDto.getIdProduct());
@@ -72,6 +96,18 @@ public class ProductService {
         product.setCode(productoDto.getCode());
         productoRepository.save(product);
         return product.getActive();
+    }
+
+    public void editProductInCloud(ProductoDto productoDto){
+        Firestore dbFirestore=fbInitialize.getFirebase();
+        ApiFuture<WriteResult> collectionApiFuture= dbFirestore.collection("Product").document(String.valueOf(productoDto.getIdProduct())).set(productoDto);
+    }
+
+
+    public int editProductGeneral(ProductoDto productoDto){
+        editProductInCloud(productoDto);
+        int i=ediproducto(productoDto);
+        return i;
     }
 
     public ProductoDto invetarioroducto( int id ,int cant){

@@ -38,12 +38,13 @@ public class CompraController {
 
     @PostMapping("/addCompraCloud/{tipocompra}/{iduser}")
     public int addCompraInCloud(@PathVariable("tipocompra")int tipocompra,@PathVariable("iduser")int iduser,@RequestBody CompraDto compraDto){
-        CollectionReference compraCR=fbInitialize.getFirebase().collection("Compra");
+ /*       CollectionReference compraCR=fbInitialize.getFirebase().collection("Compra");
         String cad="compra"+compraDto.getIdCompra();
         compraCR.document(cad).set(compraDto);
         int i=compraService.addCompra(compraDto,tipocompra,iduser);
         // LOGGER.info(productService.nuevoproducto(productoDto,idtienda).toString());
-        return compraDto.getIdCompra();
+        return compraDto.getIdCompra();*/
+        return compraService.addCompraGeneral(tipocompra,iduser,compraDto);
 //        return productService.nuevoproducto(productoDto,idtienda);
     }
 

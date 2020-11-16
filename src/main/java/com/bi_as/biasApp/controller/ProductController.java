@@ -60,39 +60,38 @@ public class ProductController {
     }
 */
     @PostMapping("/addproduct/{id}")
-    public int addproductInCloud(@PathVariable("id")String id,@RequestBody ProductoDto productoDto){
-        LOGGER.info("llego aqui xd");
-        String cad=String.valueOf(productoDto.getName());
+    public int addproductInCloud(@PathVariable("id")int id,@RequestBody ProductoDto productoDto){
+/*        String cad=String.valueOf(productoDto.getName());
         cad=cad.replace(" ","");
         CollectionReference productCR=fbInitialize.getFirebase().collection("Product");
         productCR.document(cad).set(productoDto);
         int idtienda =Integer.parseInt(id);
-        int i=productService.nuevoproducto(productoDto,idtienda);
+        int i=productService.addProductDB(productoDto,idtienda);
         // LOGGER.info(productService.nuevoproducto(productoDto,idtienda).toString());
-        return productoDto.getIdProduct();
+        return productoDto.getIdProduct();*/
+        return productService.addProductGeneral(productoDto,id);
 //        return productService.nuevoproducto(productoDto,idtienda);
+
     }
 
 
     @PutMapping("/editproducto")
     public int editPublication(@RequestBody ProductoDto productoDto){
         LOGGER.info("Realizando modificacion de editar user  esss "+productoDto.getIdProduct());
-
-
         return productService.ediproducto(productoDto);
 
     }
 
-
-    @PutMapping("/editproductoInCloud")
-    public String editProduct(@RequestBody ProductoDto productoDto) throws InterruptedException, ExecutionException{
-        Firestore dbFirestore=fbInitialize.getFirebase();
-        ApiFuture<WriteResult> collectionApiFuture= dbFirestore.collection("Product").document("1").set(productoDto);
+    @PutMapping("/editproductoInCloud/{idtienda}")
+    public int editProduct(@RequestBody ProductoDto productoDto) throws InterruptedException, ExecutionException{
+/*        Firestore dbFirestore=fbInitialize.getFirebase();
+        ApiFuture<WriteResult> collectionApiFuture= dbFirestore.collection("Product").document(String.valueOf(productoDto.getIdProduct())).set(productoDto);
         LOGGER.info("Realizando modificacion de editar user  esss "+productoDto.getIdProduct());
         int i=productService.ediproducto(productoDto);
-        return collectionApiFuture.get().getUpdateTime().toString();
+        return i;*/
+        return productService.editProductGeneral(productoDto);
+//        return collectionApiFuture.get().getUpdateTime().toString();
 //        return productService.ediproducto(productoDto);
-
     }
 
     @PutMapping("/editproducto/{id}/{inv}")

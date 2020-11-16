@@ -6,7 +6,7 @@ public class CompraProductoDto {
     private int id_producto;
     private int estado;
     private int quantity;
-    private int precio;
+    private double precio;
 
     public CompraProductoDto(){
 
@@ -59,11 +59,11 @@ public class CompraProductoDto {
         this.estado = estado;
     }
 
-    public int getPrecio() {
+    public double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(int precio) {
+    public void setPrecio(double precio) {
         this.precio = precio;
     }
 }
