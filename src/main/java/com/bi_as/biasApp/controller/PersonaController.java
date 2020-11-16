@@ -66,8 +66,13 @@ public class PersonaController {
     public PersonaDto addUserSeller(@RequestBody PersonaDto personaDto){
 //        UserDto userDto=new UserDto(userService.verifyUser(user));
 //        LOGGER.info("Obteniendo id "+personaDto.getNicknameUser()+"    "+ personaDto.getPassword());
-        return personaService.saveUserSeller(personaDto);
 
+
+        CollectionReference userCR=fbInitialize.getFirebase().collection("UsersSellers");
+        userCR.document(String.valueOf(personaDto.getNicknameUser())).set(personaDto);
+
+
+        return personaService.saveUserSeller(personaDto);
     }
 
 
@@ -80,7 +85,7 @@ public class PersonaController {
     @PostMapping("/adduser")
     public int addUserCloud(@RequestBody PersonaDto personaDto){
         CollectionReference userCR=fbInitialize.getFirebase().collection("Users");
-        userCR.document(String.valueOf(personaDto.getIdUser())).set(personaDto);
+        userCR.document(String.valueOf(personaDto.getNicknameUser())).set(personaDto);
         return personaDto.getIdUser();
     }
     @RequestMapping("/userlist")
