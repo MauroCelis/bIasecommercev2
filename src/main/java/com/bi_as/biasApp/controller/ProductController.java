@@ -82,7 +82,7 @@ public class ProductController {
 
     }
 
-    @PutMapping("/editproductoInCloud/{idtienda}")
+    @PutMapping("/editproductoInCloud")
     public int editProduct(@RequestBody ProductoDto productoDto) throws InterruptedException, ExecutionException{
 /*        Firestore dbFirestore=fbInitialize.getFirebase();
         ApiFuture<WriteResult> collectionApiFuture= dbFirestore.collection("Product").document(String.valueOf(productoDto.getIdProduct())).set(productoDto);
@@ -111,9 +111,9 @@ public class ProductController {
     }
 
     @RequestMapping("/productlist")
-    public List<ProductoDto> getUserNicknameAndPassword(){
+    public List<ProductoDto> getUserNicknameAndPassword() throws InterruptedException, ExecutionException{
         LOGGER.info("Obteniendo id graphic");
-        return productService.getlistproduct();
+        return productService.getListProductsGeneral();
     }
 
     @RequestMapping("/productlistcloud")

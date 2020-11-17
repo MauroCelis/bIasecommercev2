@@ -10,16 +10,16 @@ import com.bi_as.biasApp.domain.UserSeller;
 import com.bi_as.biasApp.dto.PersonaDto;
 import com.bi_as.biasApp.dto.ProductoDto;
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.CollectionReference;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.WriteResult;
+import com.google.cloud.firestore.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class ProductService {
@@ -126,14 +126,89 @@ public class ProductService {
     }
 
 
+    public List<ProductoDto> getListProductsGeneral() throws InterruptedException, ExecutionException{
+        compareListOfProducts();
+        return  getlistproduct();
+    }
 
-    public List<ProductoDto> getlistproduct(){
+    public List<ProductoDto> getlistproduct() {
         List<Product> productList = productoRepository.findproduclist();
         List<ProductoDto> productoDtos=new ArrayList<>();
         for(Product product:productList){
             productoDtos.add(new ProductoDto(product));
         }
         return  productoDtos;
+    }
+
+    public List<ProductoDto> getProductListInCloud() throws InterruptedException, ExecutionException {
+        List<ProductoDto> productoDtoList=new ArrayList<>();
+        CollectionReference product=fbInitialize.getFirebase().collection("Product");
+        ApiFuture<QuerySnapshot> querySnapshot=product.get();
+        for(DocumentSnapshot doc:querySnapshot.get().getDocuments()){
+            ProductoDto productoDto=doc.toObject(ProductoDto.class);
+            productoDtoList.add(productoDto);
+        }
+        LOGGER.info("Obteniendo id graphic");
+//        return productService.getlistproduct();
+        return productoDtoList;
+    }
+
+    public void updateListOfProducts(int flag) throws InterruptedException, ExecutionException{
+        List<ProductoDto> productListDBproducts=getlistproduct();
+        List<ProductoDto> productListCloud=getProductListInCloud();
+        ProductoDto productoDto=productListDBproducts.get(flag);
+        ProductoDto productoDto1=productListCloud.get(flag);
+        productoDto.setQuantity(productoDto1.getQuantity());
+        productoDto.setCode(productoDto1.getCode());
+        productoDto.setDescription(productoDto1.getDescription());
+        productoDto.setCost(productoDto1.getCost());
+        productoDto.setName(productoDto1.getName());
+        productoDto.setType(productoDto1.getType());
+        ediproducto(productoDto);
+    }
+
+    public void compareListOfProducts() throws InterruptedException, ExecutionException{
+        int flag=-1;
+        List<ProductoDto> productListDBproducts=getlistproduct();
+        List<ProductoDto> productListCloud=getProductListInCloud();
+        if(productListDBproducts.size()==productListCloud.size()){
+            for(int i=0;i<productListDBproducts.size();i++){
+                ProductoDto productoDto=productListDBproducts.get(i);
+                ProductoDto productoDto1=productListCloud.get(i);
+                if(productoDto.getQuantity()!=productoDto1.getQuantity()){
+                    flag=i;
+                }
+                if(productoDto.getCode()!=productoDto1.getCode()){
+                    flag=i;
+                }
+                if(!productoDto.getDescription().equals(productoDto1.getDescription())){
+                    flag=i;
+                }
+                BigDecimal numbigdecimal= new BigDecimal(productoDto.getCost());
+                BigDecimal numbigdecimal2= new BigDecimal(productoDto1.getCost());
+                if((numbigdecimal.compareTo(numbigdecimal2))!=0){
+                    flag=i;
+                }
+                if(!productoDto.getName().equals(productoDto1.getName())){
+                    flag=i;
+                }
+                if(!productoDto.getType().equals(productoDto1.getType())){
+                    flag=i;
+                }
+
+                if(flag!=-1){
+                    updateListOfProducts(flag);
+                    flag=-1;
+                }
+            }
+        }
+        else {
+            int diferenceamonglist=productListCloud.size()-productListDBproducts.size();
+            for(int i=1;i<=diferenceamonglist;i++){
+                ProductoDto productoDto=productListCloud.get(productListCloud.size()-i);
+                addProductDB(productoDto,1);
+            }
+        }
     }
 
 
@@ -147,5 +222,6 @@ public class ProductService {
         return statua;
 
     }
+
 
 }
