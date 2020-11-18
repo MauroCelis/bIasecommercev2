@@ -11,6 +11,9 @@ public class PersonaDto {
     private String secondLastName;
     private String mail;
     private String password;
+    private String urlImage;
+    private String nameImage;
+
 public PersonaDto(){
 }
     public PersonaDto(Persona persona) {
@@ -22,6 +25,25 @@ public PersonaDto(){
         this.secondLastName=persona.getSecondLastName();
         this.mail=persona.getMail();
         this.password = persona.getPassword();
+        this.urlImage=persona.getUrlImage();
+        this.nameImage=persona.getNameImage();
+
+    }
+
+    public String getUrlImage() {
+        return urlImage;
+    }
+
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
+    }
+
+    public String getNameImage() {
+        return nameImage;
+    }
+
+    public void setNameImage(String nameImage) {
+        this.nameImage = nameImage;
     }
 
     public String getNicknameUser() {

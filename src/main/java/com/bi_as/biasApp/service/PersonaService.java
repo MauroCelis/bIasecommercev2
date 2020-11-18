@@ -81,8 +81,16 @@ public class PersonaService {
         LOGGER.info("Second last name "+personaDto.getSecondLastName());
         persona.setMail(personaDto.getMail());
         persona.setPassword(personaDto.getPassword());
-        persona.setUrlImage("urlsellerimage1");
-        persona.setNameImage("Imageseller1");
+        if(personaDto.getUrlImage().isEmpty()){
+
+            persona.setUrlImage("urlsellerimage1");
+            persona.setNameImage("Imageseller1");
+        }else {
+
+            persona.setUrlImage(personaDto.getUrlImage());
+            persona.setNameImage(personaDto.getNameImage());
+
+        }
         persona.setActive(1);
         personaRepository.save(persona);
         Persona persona1=personaRepository.findPersonabyNicknamePassword(personaDto.getNicknameUser(),personaDto.getPassword());
@@ -127,8 +135,17 @@ public class PersonaService {
         persona.setSecondLastName(personaDto.getSecondLastName());
         persona.setMail(personaDto.getMail());
         persona.setPassword(personaDto.getPassword());
-        persona.setUrlImage("urlsellerimage1");
-        persona.setNameImage("Imageseller1");
+        if(personaDto.getUrlImage().isEmpty()){
+
+            persona.setUrlImage("urlsellerimage1");
+            persona.setNameImage("Imageseller1");
+        }else {
+
+            persona.setUrlImage(personaDto.getUrlImage());
+            persona.setNameImage(personaDto.getNameImage());
+
+        }
+
         personaRepository.save(persona);
         return  personaDto;
     }
