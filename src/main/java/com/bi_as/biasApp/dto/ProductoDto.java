@@ -11,6 +11,8 @@ public class ProductoDto {
     private int code;
     private int quantity;
     private String type;
+    private String urlImage;
+    private String nameImage;
 
     public ProductoDto(Product product) {
         this.idProduct = product.getIdProduct();
@@ -20,6 +22,8 @@ public class ProductoDto {
         this.code = product.getCode();
         this.quantity = product.getQuantity();
         this.type=product.getType();
+        this.urlImage=product.getUrlImage();
+        this.nameImage=product.getNameImage();
     }
     public ProductoDto(){
 
@@ -78,5 +82,21 @@ public class ProductoDto {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getUrlImage() {
+        return urlImage;
+    }
+
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
+    }
+
+    public String getNameImage() {
+        return nameImage;
+    }
+
+    public void setNameImage(String nameImage) {
+        this.nameImage = nameImage;
     }
 }

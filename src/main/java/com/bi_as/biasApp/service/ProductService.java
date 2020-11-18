@@ -56,8 +56,15 @@ public class ProductService {
         product.setCode(productoDto.getCode());
         product.setQuantity(productoDto.getQuantity());
         product.setType(productoDto.getType());
-        product.setUrlImage("urlimagenproducto");
-        product.setNameImage("produtoimagen.jpg");
+        if(productoDto.getUrlImage().equals("vacio")){
+            product.setUrlImage("vacio");
+            product.setNameImage("vacio");
+        }
+        else {
+            product.setUrlImage(productoDto.getUrlImage());
+            product.setNameImage(productoDto.getNameImage());
+        }
+//        product.setNameImage("produtoimagen.jpg");
         product.setActive(1);
         //Store store= new Store();
         //store=stroreRepository.findstoreidstore(idtienda);
