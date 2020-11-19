@@ -115,6 +115,14 @@ public class ProductController {
         LOGGER.info("Obteniendo id graphic");
         return productService.getListProductsGeneral();
     }
+    //getListProductsstore
+
+
+    @RequestMapping("/productlist/{idstore}")
+    public List<ProductoDto> glisproductostore(@PathVariable("idstore") int id) throws InterruptedException, ExecutionException{
+        LOGGER.info("Obteniendo id graphic");
+        return productService.getListProductsstore(id);
+    }
 
     @RequestMapping("/productlistcloud")
     public List<ProductoDto> getProductListInCloud() throws InterruptedException, ExecutionException {

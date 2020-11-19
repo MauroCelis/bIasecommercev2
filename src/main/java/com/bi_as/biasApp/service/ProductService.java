@@ -138,6 +138,15 @@ public class ProductService {
         return  getlistproduct();
     }
 
+    public List<ProductoDto> getListProductsstore(Integer id) {
+        List<Product> productList = productoRepository.findproducliststore(id);
+        List<ProductoDto> productoDtos=new ArrayList<>();
+        for(Product product:productList){
+            productoDtos.add(new ProductoDto(product));
+        }
+        return  productoDtos;
+    }
+
     public List<ProductoDto> getlistproduct() {
         List<Product> productList = productoRepository.findproduclist();
         List<ProductoDto> productoDtos=new ArrayList<>();

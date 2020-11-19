@@ -18,6 +18,10 @@ public interface ProductoRepository extends JpaRepository<Product,Integer> {
     @Query(value = "select * from product where active=1",nativeQuery = true)
     List<Product> findproduclist();
 
+    @Query(value = "select * from product where active=1 and strore_id_store=?1 ",nativeQuery = true)
+    List<Product> findproducliststore(int var1);
+
+
     @Query(value = "select * from product ORDER BY id_product DESC LIMIT 1",nativeQuery = true)
     Product findlastproductregistered();
 
