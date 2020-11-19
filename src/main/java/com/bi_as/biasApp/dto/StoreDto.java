@@ -8,14 +8,35 @@ public class StoreDto {
     private String locationStore;
     private String telefono;
 
+    private String urlImage;
+    private String nameImage;
+
     public StoreDto(Store store) {
         this.idStore = store.getIdStore();
         this.nameStore = store.getNameStore();
         this.locationStore = store.getLocationStore();
         this.telefono = store.getTelefono();
+        this.urlImage=store.getUrlImage();
+        this.nameImage=store.getNameImage();
     }
     public StoreDto(){
 
+    }
+
+    public String getUrlImage() {
+        return urlImage;
+    }
+
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
+    }
+
+    public String getNameImage() {
+        return nameImage;
+    }
+
+    public void setNameImage(String nameImage) {
+        this.nameImage = nameImage;
     }
 
     public Integer getIdStore() {
