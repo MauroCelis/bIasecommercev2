@@ -63,5 +63,8 @@ public class StoreController {
         }
         return  storeDtoList;
     }
-
+    @RequestMapping("/storelist")
+    public List<StoreDto> getstorelist(){
+        return storeService.findstorelist();
+    }
 }
