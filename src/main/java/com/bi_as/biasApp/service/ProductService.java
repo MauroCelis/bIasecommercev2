@@ -101,6 +101,11 @@ public class ProductService {
         product.setType(productoDto.getType());
         product.setQuantity(productoDto.getQuantity());
         product.setCode(productoDto.getCode());
+        if(product.getUrlImage()!= null){
+
+            product.setUrlImage(product.getUrlImage());
+        }
+
         productoRepository.save(product);
         return product.getActive();
     }
