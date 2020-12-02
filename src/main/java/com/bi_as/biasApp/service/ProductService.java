@@ -180,6 +180,7 @@ public class ProductService {
         productoDto.setCost(productoDto1.getCost());
         productoDto.setName(productoDto1.getName());
         productoDto.setType(productoDto1.getType());
+        productoDto.setUrlImage(productoDto1.getUrlImage());
         ediproducto(productoDto);
     }
 
